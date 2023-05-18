@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일기장</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">LEESH's 일기장</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'main_page'%}">홈</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'diary_post'%}">일기 작성</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="alert alert-info container mt-5" style="border-left: 6px solid #97d5e2;">
+        {{notice.content}}
+    </div>
+    
+    <div class="container mt-5">
+        <h1>대표 일기들!</h1>
+        <hr>
+        <div class="row">
+            {% for diary in diaries %}
+                {% if forloop.counter <= 2 %}
+                    <div class="col-md-6">
+                        <h3>{{diary.title}}</h3>
+                        <p>{{diary.contents}}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <h1>나만의 일기들!</h1>
+        <hr>
+        <ul class="list-group">
+            {% for diary in diaries %}
+                <li class="list-group-item">
+                    <a href="{% url 'diary_detail' pk=diary.pk %}">{{diary.title}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
