@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Diaries, Notice
+from .models import Diaries, Notice, Comment
 from .forms import DiaryForm
 
 # Create your views here.
 def main_page(request):
-    diaries = Diaries.objects.all()
+    diaries = Diaries.objects.filter(deleted=0)
     notice = Notice.objects.first()
     return render(request, 'myposts/main.html', {'diaries':diaries, 'notice':notice})
 
@@ -21,4 +21,20 @@ def diary_post(request):
 
 def diary_detail(request, pk):
     diary = Diaries.objects.get(id=pk)
-    return render(request, 'myposts/diary_detail.html', {'diary': diary})
+    comments = Comment.objects.filter(diary = diary)
+    return render(request, 'myposts/diary_detail.html', {'diary': diary, 'comments' : comments})
+
+def diary_delete(request, pk):
+    diary = Diaries.objects.get(id=pk)
+    diary.deleted = 1
+    diary.save()
+    return redirect('main_page')
+
+def add_comment(request, pk):
+    diary = Diaries.objects.get(id=pk)
+    
+    if request.method == "POST":
+        text = request.POST.get('commentInput')
+        Comment.objects.create(diary=diary, contents=text)
+        
+    return redirect('diary_detail', pk=diary.pk)

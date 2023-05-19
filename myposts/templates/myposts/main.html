@@ -47,7 +47,11 @@
             {% for diary in diaries %}
                 <li class="list-group-item">
                     <a href="{% url 'diary_detail' pk=diary.pk %}">{{diary.title}}</a>
+                    <div class="float-right alert alert-warning">
+                        작성자 : {{diary.writer}}
+                    </div>
                 </li>
+                <!-- <div style="float:right"> -->
             {% endfor %}
         </ul>
 
